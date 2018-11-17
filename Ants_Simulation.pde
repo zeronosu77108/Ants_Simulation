@@ -1,5 +1,5 @@
 
-int n_of_ants = 50;
+int n_of_ants = 200;
 Ant ants[] = new Ant[n_of_ants];
 Pheromone pheromones;
 Talc talc = new Talc(1024, 768);
@@ -37,7 +37,7 @@ void draw() {
   if ((keyPressed == true) && ((key == 'f') || (key == 'F'))) {
     food = new Food();
   }
-  
+    
 }
 
 void draw_background() {
@@ -49,4 +49,10 @@ void draw_background() {
 
 void mouseClicked() {
   pheromones = new Pheromone(mouseX, mouseY, 1);
+}
+
+void keyReleased() {
+  if ((key == 'r') || (key == 'R')) {
+    setup();
+  }
 }

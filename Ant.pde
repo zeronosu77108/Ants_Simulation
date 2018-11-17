@@ -6,7 +6,7 @@ class Ant {
   float direction;
   boolean satisfied;
 
-  int size = 15;
+  int size = 10;
   int speed = 1;
 
   Ant(Talc talc) {
@@ -14,6 +14,7 @@ class Ant {
     this.y = round(random(talc.line+size, height));
     this.direction = round(random(0, 360));
     this.hunger = round(random(30, 100));
+    hunger = 0;
   }
 
   void run(Talc talc) {
@@ -23,7 +24,7 @@ class Ant {
 
   void update(Talc talc) {
     if ( hunger > 0 ) {
-      hunger -= 0.1;
+      hunger -= 0.05;
     }
 
     satisfied = (hunger<25) ? false : true;
@@ -51,7 +52,18 @@ class Ant {
   // 後で直す
   void cal_direction() {
     if ( satisfied == false ) {
-      direction += (-90 - direction) * random(0.005, 0.01);
+      dicide_direction(-90);
+    } else {
+      direction += random(-3,3);
+    }
+  }
+  
+  void dicide_direction(float theta) {
+    boolean roteto = theta>direction ? !(theta - direction > 180.0) : (direction - theta > 180.0);
+    if( roteto = true ) {
+      direction += (-abs(theta - direction) +360)%360 * random(0.02,0.05) * 0.5;
+    } else {
+      direction += (-abs(theta - direction) -360)%360 * random(0.02,0.05) * 0.5;
     }
   }
 
