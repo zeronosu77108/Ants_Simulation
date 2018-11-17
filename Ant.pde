@@ -80,6 +80,7 @@ class Ant {
     } else {
       direction += (-abs(theta - direction) -360)%360 * random(0.02,0.05) * 0.5;
     }
+    direction += random(-3,3);
   }
 
   // 移動系 後で直す
