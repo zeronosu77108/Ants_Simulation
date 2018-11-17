@@ -9,14 +9,13 @@ class Ant {
 
   int size = 10;
   int speed = 1;
-  
   int mode = 0;
-  /*  mode 
+  /**********************
   *  0 : 徘徊 (満腹状態)
   *  1 : 探索 (空腹)
   *  2 : 誘引
   *  3 : 採取
-  */
+  **********************/
 
   Ant(Talc talc) {
     this.talc = talc;
@@ -36,8 +35,8 @@ class Ant {
       hunger -= 0.05;
     }
 
-
     switch_mode();
+    
     cal_direction();
     cal_position();
   }
@@ -61,24 +60,23 @@ class Ant {
   // 後で直す
   void cal_direction() {
     switch(mode) {
-      case 1:
+      case 0:
         direction += random(-3,3);
         break;
+      case 1:
+         dicide_direction(90);
+        break;
       case 2:
-        dicide_direction(90);
         break;
       case 3:
-        break;
-      case 4:
         break;
     }
   }
   
   void dicide_direction(float theta) {
-    boolean roteto = theta>direction ? !(theta - direction > 180) : (direction - theta > 180);
+    boolean roteto = theta>direction ? !(theta - direction > 180.0) : (direction - theta > 180.0);
     if( roteto ) {
       direction += (-abs(theta - direction) +360)%360 * random(0.02,0.05) * 0.5;
-
     } else {
       direction += (-abs(theta - direction) -360)%360 * random(0.02,0.05) * 0.5;
     }
@@ -97,9 +95,9 @@ class Ant {
   
   void switch_mode() {
     if( hunger < 25 ) {
-      mode = 1;
+      mode = 1;  // 空腹
     } else {
-      mode = 0;
+      mode = 0;  // 徘徊
     }
   }
 }
