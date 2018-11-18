@@ -18,7 +18,7 @@ void draw() {
   
   talc.run();
   for(Ant ant : ants) {
-    ant.run(talc);
+    ant.run();
   }
   if( food != null) {
     food.run();
