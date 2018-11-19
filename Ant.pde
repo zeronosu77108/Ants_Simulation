@@ -1,7 +1,11 @@
 class Ant {
   Talc talc;
+  Pheromone p;
   float x;
   float y;
+  int red;
+  int green;
+  int blue;
 
   float hunger;
   float direction;
@@ -17,6 +21,9 @@ class Ant {
   *  3 : 誘引
   *  4 : 採取
   **********************/
+  
+  float r = 50;
+
 
   Ant(Talc talc) {
     this.talc = talc;
@@ -26,14 +33,15 @@ class Ant {
     this.hunger = round(random(30, 100));
   }
 
-  void run() {
+  void run(Pheromone p) {
+    this.p = p;
     update();
     display();
   }
 
   void update() {
     if ( hunger > 0 ) {
-      hunger -= 0.05;
+      //hunger -= 0.05;
     }
 
     switch_mode();
@@ -43,7 +51,7 @@ class Ant {
   }
 
   void display() {
-    fill(0x80, 0x00, 0x00);
+    fill(red, green, blue);
     strokeWeight(.5);
 
     pushMatrix();
@@ -62,14 +70,18 @@ class Ant {
   void cal_direction() {
     switch(mode) {
       case 0:
+        red=0x80; green=0x00; blue=0x00;
         direction += random(-3,3);
         break;
       case 1:
         break;
       case 2:
-         dicide_direction(90);
+        red=0xff; green=0xc0; blue=0xcb;
+        dicide_direction(90);
         break;
       case 3:
+        red=0xff; green=0x14; blue=0x93;
+        direction = -degrees(atan2(p.y - this.y, p.x - this.x));
         break;
       case 4:
         break;
@@ -100,8 +112,14 @@ class Ant {
   void switch_mode() {
     if( hunger < 25 ) {
       mode = 2;  // 空腹
+    } else if( (p != null) && is_in_area(50) ) {
+        mode = 3;
     } else {
       mode = 0;  // 徘徊
     }
+  }
+  
+  boolean is_in_area(float r) {
+    return (this.x - r < p.x) && (this.x + r > p.x) && (this.y - r < p.y) && (this.y + r > p.y);
   }
 }

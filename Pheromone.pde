@@ -4,6 +4,7 @@ class Pheromone {
   float size = 5;
   float efficiency = 100;
   int level;
+  
   Pheromone(float x, float y, int level) {
     this.x = x;
     this.y = y;
