@@ -19,8 +19,12 @@ void draw() {
   draw_background();
   
   talc.run();
+  Pheromone t = pheromones;
   for(Ant ant : ants) {
-    ant.run(pheromones, food);
+    ant.run(t, food);
+    if( ant.t != null ) {
+      pheromones = ant.t;
+    }
   }
   if( food != null) {
     food.run(); //<>//
@@ -30,6 +34,10 @@ void draw() {
   }
   if( pheromones != null) {
     pheromones.run();
+    
+    if(pheromones.efficiency <= 0) {
+      pheromones = null;
+    }
   }
   
   if ((keyPressed == true) && ((key == 't') || (key == 'T'))) {

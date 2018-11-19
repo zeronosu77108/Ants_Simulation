@@ -17,7 +17,7 @@ class Pheromone {
   }
   
   void update() {
-    efficiency -= 0.1;
+    efficiency -= 1.1;
   }
   
   void display() {

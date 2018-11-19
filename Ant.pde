@@ -2,6 +2,7 @@ class Ant {
   Talc talc;
   Pheromone p;
   Food food;
+  Pheromone t = null;
   
   float x;
   float y;
@@ -36,6 +37,7 @@ class Ant {
   }
 
   void run(Pheromone p, Food food) {
+    this.t = null;
     this.p = p;
     this.food = food;
     update();
@@ -116,17 +118,22 @@ class Ant {
       x = (x>width) ? x%width : x;
       x = (x<0) ? x+width : x;
       y = y + speed * sin(radians(-direction));
+      if( y > height ) {
+        dicide_direction(90);
+      }
     }
     if( mode==4 && (food!=null) && is_in_f_area(food.size)){
       food.leftover --;
       this.hunger = 100;
+      
     }
   }
   
   void switch_mode() {
-    if( (mode==1 || mode==2 || mode==3 || mode==4) && (food!=null) && is_in_f_area(100) ) {
+    if( (mode==1 || mode==2 || mode==3 || mode==4) && (food!=null) && is_in_f_area(50) ) {
       mode = 4;  // 採取
-    } else  if( (mode==1 || mode==2 || mode==3) && (p != null) && is_in_p_area(50) ) {
+      t = new Pheromone(this.x,this.y, 1);
+    } else  if( (mode==1 || mode==2 || mode==3) && (p != null) && is_in_p_area(250) ) {
       mode = 3;  // 誘引
     } else if( hunger <= 15) {
       mode = 2;  // 空腹
