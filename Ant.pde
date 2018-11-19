@@ -1,6 +1,8 @@
 class Ant {
   Talc talc;
   Pheromone p;
+  Food food;
+  
   float x;
   float y;
   int red;
@@ -33,15 +35,16 @@ class Ant {
     this.hunger = round(random(70, 100));
   }
 
-  void run(Pheromone p) {
+  void run(Pheromone p, Food food) {
     this.p = p;
+    this.food = food;
     update();
     display();
   }
 
   void update() {
     if ( hunger > 0 ) {
-      hunger -= 0.05;
+      hunger -= 0.02;
     }
 
     switch_mode();
@@ -69,22 +72,25 @@ class Ant {
   // 後で直す
   void cal_direction() {
     switch(mode) {
-      case 0:
+      case 0:  // 徘徊 (満腹状態)
         red=0xff; green=0xc7; blue=0xaf;
         direction += random(-3,3);
         break;
-      case 1:
+      case 1:  // 探索（普通）
         red=0x80; green=0x00; blue=0x00;
+        direction += random(-5,5);
         break;
-      case 2:
+      case 2:  // 探索 (空腹)
         red=0xff; green=0xc0; blue=0xcb;
         dicide_direction(90);
         break;
-      case 3:
+      case 3:  // 誘引
         red=0xff; green=0x14; blue=0x93;
         direction = -degrees(atan2(p.y - this.y, p.x - this.x));
         break;
-      case 4:
+      case 4:  // 採取
+        red=0x4b; green=0x00; blue=0x82;
+        direction = -degrees(atan2(food.y - this.y, food.x - this.x));
         break;
     }
   }
@@ -111,21 +117,32 @@ class Ant {
       x = (x<0) ? x+width : x;
       y = y + speed * sin(radians(-direction));
     }
+    if( mode==4 && (food!=null) && is_in_f_area(food.size)){
+      food.leftover --;
+      this.hunger = 100;
+    }
   }
   
   void switch_mode() {
-    if( (mode==1 || mode==2 || mode==3) && (p != null) && is_in_area(50) ) {
-      mode = 3;
+    if( (mode==1 || mode==2 || mode==3 || mode==4) && (food!=null) && is_in_f_area(100) ) {
+      mode = 4;  // 採取
+    } else  if( (mode==1 || mode==2 || mode==3) && (p != null) && is_in_p_area(50) ) {
+      mode = 3;  // 誘引
     } else if( hunger <= 15) {
       mode = 2;  // 空腹
     } else if (hunger <= 80) {
       mode = 1;  // 普通
-    } else {
+    } 
+    if (hunger > 80) {
       mode = 0;  // 徘徊
     }
   }
   
-  boolean is_in_area(float r) {
+    boolean is_in_f_area(float r) {
+    return (this.x - r < food.x) && (this.x + r > food.x) && (this.y - r < food.y) && (this.y + r > food.y);
+  }
+  
+  boolean is_in_p_area(float r) {
     return (this.x - r < p.x) && (this.x + r > p.x) && (this.y - r < p.y) && (this.y + r > p.y);
   }
 }
