@@ -30,7 +30,7 @@ class Ant {
     this.x = round(random(0, width));
     this.y = round(random(talc.line+size, height));
     this.direction = round(random(0, 360));
-    this.hunger = round(random(30, 100));
+    this.hunger = round(random(70, 100));
   }
 
   void run(Pheromone p) {
@@ -41,7 +41,7 @@ class Ant {
 
   void update() {
     if ( hunger > 0 ) {
-      //hunger -= 0.05;
+      hunger -= 0.05;
     }
 
     switch_mode();
@@ -70,10 +70,11 @@ class Ant {
   void cal_direction() {
     switch(mode) {
       case 0:
-        red=0x80; green=0x00; blue=0x00;
+        red=0xff; green=0xc7; blue=0xaf;
         direction += random(-3,3);
         break;
       case 1:
+        red=0x80; green=0x00; blue=0x00;
         break;
       case 2:
         red=0xff; green=0xc0; blue=0xcb;
@@ -101,6 +102,9 @@ class Ant {
   // 移動系 後で直す
   void cal_position() {
     if ( y+speed*sin(radians(-direction)) < talc.line + size + 2) {
+      if( mode != 2) {
+        direction += direction;
+      }
     } else {
       x = x + speed * cos(radians(-direction));
       x = (x>width) ? x%width : x;
@@ -110,10 +114,12 @@ class Ant {
   }
   
   void switch_mode() {
-    if( hunger < 25 ) {
+    if( (mode==1 || mode==2 || mode==3) && (p != null) && is_in_area(50) ) {
+      mode = 3;
+    } else if( hunger <= 15) {
       mode = 2;  // 空腹
-    } else if( (p != null) && is_in_area(50) ) {
-        mode = 3;
+    } else if (hunger <= 80) {
+      mode = 1;  // 普通
     } else {
       mode = 0;  // 徘徊
     }
