@@ -12,9 +12,10 @@ class Ant {
   int mode = 0;
   /**********************
   *  0 : 徘徊 (満腹状態)
-  *  1 : 探索 (空腹)
-  *  2 : 誘引
-  *  3 : 採取
+  *  1 : 探索（普通）
+  *  2 : 探索 (空腹)
+  *  3 : 誘引
+  *  4 : 採取
   **********************/
 
   Ant(Talc talc) {
@@ -64,11 +65,13 @@ class Ant {
         direction += random(-3,3);
         break;
       case 1:
-         dicide_direction(90);
         break;
       case 2:
+         dicide_direction(90);
         break;
       case 3:
+        break;
+      case 4:
         break;
     }
   }
@@ -96,7 +99,7 @@ class Ant {
   
   void switch_mode() {
     if( hunger < 25 ) {
-      mode = 1;  // 空腹
+      mode = 2;  // 空腹
     } else {
       mode = 0;  // 徘徊
     }

@@ -11,6 +11,8 @@ void setup() {
   for (int i=0; i<n_of_ants; i++) {
     ants[i] = new Ant(talc);
   }
+  food = null;
+  pheromones = null;
 }
 
 void draw() {
