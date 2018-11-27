@@ -34,6 +34,7 @@ void draw() {
       pheromones = ant.t;
     }
   }
+  
   if( food != null) {
     food.run(); //<>//
     if( food.leftover <= 0 ) {
