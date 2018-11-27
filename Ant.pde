@@ -36,8 +36,8 @@ class Ant {
     this.hunger = round(random(70, 100));
   }
 
-  void run(Pheromone p, Food food) {
-    this.t = null;
+  void run(Pheromone p, Food food, Talc talc) {
+    this.talc = talc;
     this.p = p;
     this.food = food;
     update();
@@ -109,7 +109,7 @@ class Ant {
 
   // 移動系 後で直す
   void cal_position() {
-    if ( y+speed*sin(radians(-direction)) < talc.line + size + 2) {
+    if ( talc != null && y+speed*sin(radians(-direction)) < talc.line + size + 2) {
       if( mode != 2) {
         direction += direction;
       }
@@ -122,10 +122,10 @@ class Ant {
         dicide_direction(90);
       }
     }
+    
     if( mode==4 && (food!=null) && is_in_f_area(food.size)){
       food.leftover --;
       this.hunger = 100;
-      
     }
   }
   

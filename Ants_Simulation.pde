@@ -18,10 +18,18 @@ void setup() {
 void draw() {
   draw_background();
   
-  talc.run();
+  if( talc != null ) {
+    talc.run();
+    
+    if( talc.efficiency == 0 ) {
+      talc = null;
+    }
+  }
+  
+  
   Pheromone t = pheromones;
   for(Ant ant : ants) {
-    ant.run(t, food);
+    ant.run(t, food, talc);
     if( ant.t != null ) {
       pheromones = ant.t;
     }
@@ -41,6 +49,7 @@ void draw() {
   }
   
   if ((keyPressed == true) && ((key == 't') || (key == 'T'))) {
+    talc = new Talc(1024,768);
     talc.efficiency = 1000;
   }
   
