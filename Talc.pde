@@ -1,9 +1,10 @@
 class Talc {
+  final float e_max = 100;
   float efficiency;
   float line;
   
   Talc(float winW, float winH) {
-    efficiency = 1000;
+    efficiency = e_max;
     line = winH/10;
   }
   
@@ -14,7 +15,7 @@ class Talc {
   
   void update() {
     if(efficiency > 0) {
-      efficiency -= 00.1;
+      efficiency -= 0.1;
     }
   }
   

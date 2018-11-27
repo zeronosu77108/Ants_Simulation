@@ -51,7 +51,7 @@ void draw() {
   
   if ((keyPressed == true) && ((key == 't') || (key == 'T'))) {
     talc = new Talc(1024,768);
-    talc.efficiency = 1000;
+    talc.efficiency = talc.e_max;
   }
   
   if ((keyPressed == true) && ((key == 'f') || (key == 'F'))) {
